@@ -7,7 +7,7 @@
 		exports["ReactSizeMe"] = factory(require("react"), require("prop-types"), require("react-dom"));
 	else
 		root["ReactSizeMe"] = factory(root["React"], root["PropTypes"], root["ReactDOM"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_8__, __WEBPACK_EXTERNAL_MODULE_9__, __WEBPACK_EXTERNAL_MODULE_10__) {
+})(typeof self !== 'undefined' ? self : this, function(__WEBPACK_EXTERNAL_MODULE_8__, __WEBPACK_EXTERNAL_MODULE_9__, __WEBPACK_EXTERNAL_MODULE_10__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -224,9 +224,11 @@ function debounce(func, wait, options) {
   function remainingWait(time) {
     var timeSinceLastCall = time - lastCallTime,
         timeSinceLastInvoke = time - lastInvokeTime,
-        result = wait - timeSinceLastCall;
+        timeWaiting = wait - timeSinceLastCall;
 
-    return maxing ? nativeMin(result, maxWait - timeSinceLastInvoke) : result;
+    return maxing
+      ? nativeMin(timeWaiting, maxWait - timeSinceLastInvoke)
+      : timeWaiting;
   }
 
   function shouldInvoke(time) {
@@ -848,12 +850,10 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_10__;
 
 "use strict";
 /**
- * Copyright 2013-2015, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) 2013-present, Facebook, Inc.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  */
 
 
@@ -1315,20 +1315,29 @@ var _elementResizeDetector2 = _interopRequireDefault(_elementResizeDetector);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var instance = void 0;
+var scrollInstance = void 0;
+var objectInstance = void 0;
 
 // Lazily require to not cause bug
 // https://github.com/ctrlplusb/react-sizeme/issues/6
 function resizeDetector() {
   var strategy = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'scroll';
 
-  if (!instance) {
-    instance = (0, _elementResizeDetector2.default)({
+  if (strategy === 'scroll') {
+    if (scrollInstance) return scrollInstance;
+    scrollInstance = (0, _elementResizeDetector2.default)({
       strategy: strategy
     });
+    return scrollInstance;
   }
 
-  return instance;
+  if (strategy === 'object') {
+    if (objectInstance) return objectInstance;
+    objectInstance = (0, _elementResizeDetector2.default)({
+      strategy: strategy
+    });
+    return objectInstance;
+  }
 }
 
 exports.default = resizeDetector;
@@ -2886,7 +2895,7 @@ module.exports = function(options) {
                 var width = element.offsetWidth;
                 var height = element.offsetHeight;
 
-                if (width !== element.lastWidth || height !== element.lastHeight) {
+                if (width !== getState(element).lastWidth || height !== getState(element).lastHeight) {
                     debug("Element size changed.");
                     updateDetectorElements(notifyListenersIfNeeded);
                 } else {
