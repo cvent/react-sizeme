@@ -13,7 +13,7 @@ var invariant = _interopDefault(require('invariant'))
 var throttle = _interopDefault(require('lodash.throttle'))
 var debounce = _interopDefault(require('lodash.debounce'))
 
-var instance = void 0
+var instances = {}
 
 // Lazily require to not cause bug
 // https://github.com/ctrlplusb/react-sizeme/issues/6
@@ -21,13 +21,13 @@ function resizeDetector() {
   var strategy =
     arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'scroll'
 
-  if (!instance) {
-    instance = createResizeDetector({
+  if (!instances[strategy]) {
+    instances[strategy] = createResizeDetector({
       strategy: strategy,
     })
   }
 
-  return instance
+  return instances[strategy]
 }
 
 var classCallCheck = function(instance, Constructor) {
