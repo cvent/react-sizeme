@@ -113,6 +113,5 @@
     "trailingComma": "all"
   },
   "lint-staged": {
-    "*.js": ["prettier --write \"src/**/*.js\"", "git add"]
   }
 }
