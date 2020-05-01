@@ -1,36 +1,42 @@
 {
   "name": "react-sizeme",
   "version": "2.3.6",
-  "description":
-    "Make your React Components aware of their dimensions and position.",
+  "description": "Make your React Components aware of their dimensions and position.",
   "license": "MIT",
   "main": "commonjs/index.js",
-  "files": ["*.js", "*.md", "umd", "commonjs"],
+  "files": [
+    "*.js",
+    "*.md",
+    "umd",
+    "commonjs"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/ctrlplusb/react-sizeme.git"
   },
-  "keywords": ["library"],
+  "keywords": [
+    "library"
+  ],
   "homepage": "https://github.com/ctrlplusb/react-sizeme#readme",
   "author": "Sean Matheson <sean@ctrlplusb.com>",
   "scripts": {
     "build": "babel-node ./tools/scripts/build.js",
     "check": "npm run test",
-    "clean":
-      "rimraf ./commonjs && rimraf ./umd && rimraf ./coverage && rimraf ./umd",
-    "example:web":
-      "echo 'Make sure to `cd example/web && npm install`' && cd example/web && npm run start",
+    "clean": "rimraf ./commonjs && rimraf ./umd && rimraf ./coverage && rimraf ./umd",
+    "example:web": "echo 'Make sure to `cd example/web && npm install`' && cd example/web && npm run start",
     "lint": "eslint src",
     "precommit": "lint-staged && npm run test",
-    "prepublish": "npm run build",
+    "prepublish": "npm run snyk-protect && npm run build",
     "test": "jest",
     "test:coverage": "npm run test -- --coverage",
-    "test:coverage:deploy": "npm run test:coverage && codecov"
+    "test:coverage:deploy": "npm run test:coverage && codecov",
+    "snyk-protect": "snyk protect"
   },
   "dependencies": {
     "element-resize-detector": "^1.1.12",
     "invariant": "^2.2.2",
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.4",
+    "snyk": "^1.316.1"
   },
   "peerDependencies": {
     "prop-types": "^15.0.0-0",
@@ -84,13 +90,18 @@
     "webpack-hot-middleware": "^2.19.1"
   },
   "jest": {
-    "collectCoverageFrom": ["src/**/*.{js,jsx}"],
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}"
+    ],
     "testPathIgnorePatterns": [
       "<rootDir>/(commonjs|coverage|node_modules|tools|umd)/"
     ]
   },
   "lint-staged": {
-    "src/**/*.js": ["prettier --write", "git add"]
+    "src/**/*.js": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "eslintConfig": {
     "root": true,
@@ -104,7 +115,10 @@
     "extends": "airbnb",
     "rules": {
       "array-callback-return": 0,
-      "arrow-parens": ["error", "as-needed"],
+      "arrow-parens": [
+        "error",
+        "as-needed"
+      ],
       "camelcase": 0,
       "import/prefer-default-export": 0,
       "import/no-extraneous-dependencies": 0,
@@ -115,7 +129,10 @@
       "no-nested-ternary": 0,
       "react/no-array-index-key": 0,
       "react/react-in-jsx-scope": 0,
-      "semi": [2, "never"],
+      "semi": [
+        2,
+        "never"
+      ],
       "react/forbid-prop-types": 0,
       "react/jsx-filename-extension": 0,
       "react/sort-comp": 0
@@ -125,5 +142,6 @@
     "semi": false,
     "singleQuote": true,
     "trailingComma": "all"
-  }
+  },
+  "snyk": true
 }
